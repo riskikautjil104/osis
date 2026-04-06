@@ -157,11 +157,15 @@
             <i class="fas fa-eye"></i> Visi & Misi
         </a>
         <a class="nav-link {{ request()->routeIs('dashboard.sambutan*') ? 'active' : '' }}" href="{{ route('dashboard.sambutan') }}">
-    <i class="fas fa-microphone-alt me-2"></i> Sambutan Ketua</a>
-    < class="nav-link {{ request()->routeIs('dashboard.dokumen*') ? 'active' : '' }}" href="{{ route('dashboard.dokumen') }}">
+    <i class="fas fa-microphone-alt me-2"></i> Sambutan Ketua
+</a>
+<a class="nav-link {{ request()->routeIs('dashboard.dokumen*') ? 'active' : '' }}" href="{{ route('dashboard.dokumen') }}">
     <i class="fas fa-database me-2"></i> One Data
 
 </a>
+   
+
+
     </div>
     <!-- Di sidebar, tambahkan setelah menu terakhir -->
 <div class="sidebar-nav mt-auto">
