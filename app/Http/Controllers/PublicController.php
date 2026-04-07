@@ -18,7 +18,7 @@ class PublicController extends Controller
     public function index()
     {
         // Ambil 3 data terbaru untuk masing-masing section
-        $pengurus = Pengurus::where('is_active', true)->orderBy('urutan')->limit(3)->get();
+        $pengurus = Pengurus::where('is_active', true)->orderBy('urutan')->limit(6)->get();
         $agenda = Agenda::where('tanggal', '>=', now()->subDays(7))->orderBy('tanggal')->limit(3)->get();
         $berita = Berita::where('is_published', true)->orderBy('tanggal', 'desc')->limit(3)->get();
         $galeri = Galeri::where('is_active', true)->orderBy('urutan')->orderBy('tanggal', 'desc')->limit(6)->get();
