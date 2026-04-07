@@ -9,8 +9,9 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+     --}}
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #0F6E56;
@@ -23,11 +24,34 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
+        /* body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: #fff;
             overflow-x: hidden;
-        }
+        } */
+          body {
+        font-family: 'Roboto', sans-serif;
+        background: #fff;
+        overflow-x: hidden;
+    }
+      p, span, a, li, .nav-link-custom, .btn, .card-text,
+    .agenda-item, .berita-card, .sambutan-text,
+    .footer-links a, .footer-contact-text, .hero-subtitle,
+    .hero-stat-label, .section-subtitle, .sambutan-role,
+    .sambutan-badge, .berita-cat, .footer-copy {
+        font-family: 'Roboto', sans-serif;
+    }
+      h1, h2, h3, h4, h5, h6,
+    .section-title,
+    .hero-title,
+    .logo-text,
+    .footer-brand-name,
+    .sambutan-title,
+    .vm-title,
+    .hero-stat-num,
+    .agenda-day {
+        font-family: 'Syne', sans-serif;
+    }
 
         /* ===== NAVBAR ===== */
         .navbar-custom {
@@ -290,6 +314,7 @@
             }
         }
     </style>
+    @stack('meta')
 
     @stack('styles')
 </head>
