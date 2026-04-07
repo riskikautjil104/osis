@@ -459,7 +459,7 @@
                     &copy; {{ date('Y') }} <span>OSIS SMA Negeri 5 Kabupaten Pulau Morotai</span>. Semua hak dilindungi.
                 </div>
                 <div class="footer-made">
-                    Dibuat dengan <i class="fas fa-heart"></i> untuk pendidikan Maluku Utara
+                    Dibuat dengan <i class="fas fa-heart"></i> Dari Alumni SMA N 5 Kab Pulau Morotai
                 </div>
             </div>
         </div>
