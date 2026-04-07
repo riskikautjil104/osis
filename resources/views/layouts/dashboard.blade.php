@@ -156,12 +156,24 @@
         <a class="nav-link {{ request()->routeIs('dashboard.visimisi*') ? 'active' : '' }}" href="{{ route('dashboard.visimisi') }}">
             <i class="fas fa-eye"></i> Visi & Misi
         </a>
+        <a class="nav-link {{ request()->routeIs('dashboard.proker*') ? 'active' : '' }}" href="{{ route('dashboard.proker') }}">
+    <i class="fas fa-tasks me-2"></i> Program Kerja
+</a>
         <a class="nav-link {{ request()->routeIs('dashboard.sambutan*') ? 'active' : '' }}" href="{{ route('dashboard.sambutan') }}">
     <i class="fas fa-microphone-alt me-2"></i> Sambutan Ketua
 </a>
 <a class="nav-link {{ request()->routeIs('dashboard.dokumen*') ? 'active' : '' }}" href="{{ route('dashboard.dokumen') }}">
     <i class="fas fa-database me-2"></i> One Data
 
+</a>
+<a class="nav-link {{ request()->routeIs('dashboard.pesan*') ? 'active' : '' }}" href="{{ route('dashboard.pesan') }}">
+    <i class="fas fa-envelope me-2"></i> Pesan Masuk
+    @php
+        $unreadCount = \App\Models\Pesan::where('status', 'belum_dibaca')->count();
+    @endphp
+    @if($unreadCount > 0)
+        <span class="badge bg-danger float-end">{{ $unreadCount }}</span>
+    @endif
 </a>
    
 

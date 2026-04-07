@@ -11,6 +11,7 @@ use App\Models\PengurusTerdahulu;
 use Illuminate\Http\Request;
 use App\Models\Sambutan;
 use App\Models\Dokumen;
+use App\Models\Proker;
 
 class PublicController extends Controller
 {
@@ -204,5 +205,56 @@ public function dokumenExport($format)
             'Content-Disposition' => 'attachment; filename="data-dokumen-' . date('Y-m-d') . '.xls"',
         ]);
     }
+}
+public function proker()
+{
+    $kategori = request('kategori', 'all');
+    $status = request('status', 'all');
+    
+    $query = Proker::where('is_published', true);
+    
+    if ($kategori != 'all') {
+        $query->where('kategori', $kategori);
+    }
+    
+    if ($status != 'all') {
+        $query->where('status', $status);
+    }
+    
+    $proker = $query->orderByRaw("FIELD(status, 'berjalan', 'rencana', 'tertunda', 'selesai')")
+                    ->orderBy('tanggal_mulai', 'asc')
+                    ->paginate(9);
+    
+    $kategoris = Proker::select('kategori')->distinct()->get();
+    $prokerUnggulan = Proker::where('is_published', true)
+                            ->where('is_featured', true)
+                            ->limit(3)
+                            ->get();
+    
+    $stats = [
+        'total' => Proker::where('is_published', true)->count(),
+        'berjalan' => Proker::where('is_published', true)->where('status', 'berjalan')->count(),
+        'selesai' => Proker::where('is_published', true)->where('status', 'selesai')->count(),
+        'rencana' => Proker::where('is_published', true)->where('status', 'rencana')->count(),
+    ];
+    
+    return view('public.proker', compact('proker', 'kategoris', 'prokerUnggulan', 'stats'));
+}
+
+public function prokerDetail($id, $slug)
+{
+    $proker = Proker::where('id', $id)->where('slug', $slug)->firstOrFail();
+    
+    $prokerTerkait = Proker::where('is_published', true)
+        ->where('id', '!=', $id)
+        ->where('kategori', $proker->kategori)
+        ->limit(3)
+        ->get();
+    
+    return view('public.proker-detail', compact('proker', 'prokerTerkait'));
+}
+public function filosofiLogo()
+{
+    return view('public.filosofi-logo');
 }
 }

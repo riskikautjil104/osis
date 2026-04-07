@@ -833,6 +833,84 @@
     </div>
 </section>
 @endif
+{{-- ============ LOGO & FILOSOFI ============ --}}
+<section class="py-5" style="background: linear-gradient(135deg, #f0faf6 0%, #ffffff 100%);">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 text-center">
+                <div class="logo-filosofi-wrapper">
+                    <img src="{{ asset('icon/icon.png') }}" alt="Logo OSIS SMA 5 Morotai" 
+                         style="max-width: 280px; width: 100%; filter: drop-shadow(0 20px 30px rgba(15,110,86,0.2));">
+                    <div class="mt-3">
+                        <span class="badge" style="background: var(--primary);">Official Logo</span>
+                        <span class="badge bg-warning text-dark ms-2">2024/2025</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="section-tag">Identitas & Makna</div>
+                <h2 class="section-title" style="font-size: 2.2rem;">Filosofi Logo<br>OSIS SMA 5 Morotai</h2>
+                <p class="text-muted mb-4" style="line-height: 1.8;">
+                    Logo ini dirancang dengan konsep modern, berwibawa, dan beridentitas lokal, 
+                    yang mencerminkan semangat pelajar Morotai dalam berkarya dan berprestasi.
+                </p>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 p-2">
+                            <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">🛡️</div>
+                            <div>
+                                <strong>Perisai</strong>
+                                <p class="small text-muted mb-0">Perlindungan, keteguhan, tanggung jawab</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 p-2">
+                            <div style="width: 40px; height: 40px; background: var(--secondary); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #2b1800; font-size: 18px;">⭐</div>
+                            <div>
+                                <strong>Bintang</strong>
+                                <p class="small text-muted mb-0">Pancasila, harapan, masa depan gemilang</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 p-2">
+                            <div style="width: 40px; height: 40px; background: #1D9E75; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">📖</div>
+                            <div>
+                                <strong>Buku & Pena</strong>
+                                <p class="small text-muted mb-0">Ilmu pengetahuan, prestasi akademik</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start gap-3 p-2">
+                            <div style="width: 40px; height: 40px; background: #04342C; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px;">🌊</div>
+                            <div>
+                                <strong>Ombak Laut</strong>
+                                <p class="small text-muted mb-0">Identitas Morotai, semangat dinamis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-3 align-items-center flex-wrap">
+                    <a href="{{ route('public.filosofi_logo') }}" class="btn-hero-primary" style="background: var(--primary);">
+                        <i class="fas fa-info-circle"></i> Selengkapnya
+                    </a>
+                    <div class="d-flex gap-2">
+                        <div style="width: 30px; height: 30px; background: #0F6E56; border-radius: 8px;"></div>
+                        <div style="width: 30px; height: 30px; background: #1D9E75; border-radius: 8px;"></div>
+                        <div style="width: 30px; height: 30px; background: #EF9F27; border-radius: 8px;"></div>
+                        <div style="width: 30px; height: 30px; background: #FAC775; border-radius: 8px;"></div>
+                        <div style="width: 30px; height: 30px; background: #FFFFFF; border-radius: 8px; border: 1px solid #ddd;"></div>
+                    </div>
+                    <small class="text-muted">Warna makna filosofis</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 {{-- ============ PENGURUS ============ --}}
 <section id="pengurus" class="py-5" style="background: #f9f9f7;">

@@ -12,6 +12,9 @@ use App\Http\Controllers\PengurusTerdahuluController;
 use App\Http\Controllers\VisiMisiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SambutanController;
+use App\Http\Controllers\DokumenController; 
+use App\Http\Controllers\ProkerController;
+use App\Http\Controllers\PesanController;
 
 // ==================== FRONTEND ROUTES (PUBLIC) ====================
 Route::get('/', [PublicController::class, 'index'])->name('home');
@@ -25,6 +28,10 @@ Route::get('/one-data', [PublicController::class, 'dokumen'])->name('public.doku
 Route::get('/one-data/{id}/{slug}', [PublicController::class, 'dokumenDetail'])->name('public.dokumen.detail');
 Route::get('/one-data/download/{id}', [PublicController::class, 'dokumenDownload'])->name('public.dokumen.download');
 Route::get('/one-data/export/{format}', [PublicController::class, 'dokumenExport'])->name('public.dokumen.export');
+Route::get('/program-kerja', [PublicController::class, 'proker'])->name('public.proker');
+Route::get('/program-kerja/{id}/{slug}', [PublicController::class, 'prokerDetail'])->name('public.proker.detail');
+Route::post('/kontak/send', [PesanController::class, 'send'])->name('kontak.send');
+Route::get('/filosofi-logo', [PublicController::class, 'filosofiLogo'])->name('public.filosofi_logo');
 
 // ==================== AUTH ROUTES (Custom URL) ====================
 Route::prefix('osis/login/mu')->group(function () {
@@ -93,4 +100,14 @@ Route::post('/dokumen', [DokumenController::class, 'store'])->name('dashboard.do
 Route::get('/dokumen/{id}/edit', [DokumenController::class, 'edit'])->name('dashboard.dokumen.edit');
 Route::put('/dokumen/{id}', [DokumenController::class, 'update'])->name('dashboard.dokumen.update');
 Route::delete('/dokumen/{id}', [DokumenController::class, 'destroy'])->name('dashboard.dokumen.destroy');
+Route::get('/proker', [ProkerController::class, 'index'])->name('dashboard.proker');
+Route::get('/proker/create', [ProkerController::class, 'create'])->name('dashboard.proker.create');
+Route::post('/proker', [ProkerController::class, 'store'])->name('dashboard.proker.store');
+Route::get('/proker/{id}/edit', [ProkerController::class, 'edit'])->name('dashboard.proker.edit');
+Route::put('/proker/{id}', [ProkerController::class, 'update'])->name('dashboard.proker.update');
+Route::delete('/proker/{id}', [ProkerController::class, 'destroy'])->name('dashboard.proker.destroy');
+Route::get('/pesan', [PesanController::class, 'index'])->name('dashboard.pesan');
+Route::get('/pesan/{id}', [PesanController::class, 'show'])->name('dashboard.pesan.show');
+Route::post('/pesan/{id}/reply', [PesanController::class, 'reply'])->name('dashboard.pesan.reply');
+Route::delete('/pesan/{id}', [PesanController::class, 'destroy'])->name('dashboard.pesan.destroy');
 });

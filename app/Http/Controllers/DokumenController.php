@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Dokumen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class DokumenController extends Controller
 {
@@ -27,30 +26,27 @@ class DokumenController extends Controller
             'deskripsi' => 'nullable|string',
             'kategori' => 'required|string',
             'tanggal' => 'required|date',
-            'file' => 'required|file|max:10240', // Max 10MB
+            'file' => 'required|file|max:10240',
             'is_published' => 'boolean'
         ]);
         
         $data = $request->all();
         
-        // Upload file
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . '_' . Str::slug($request->judul) . '.' . $extension;
             
-            // Simpan file
+            // Buat folder jika belum ada
+            if (!file_exists(public_path('storage/dokumen'))) {
+                mkdir(public_path('storage/dokumen'), 0777, true);
+            }
+            
             $file->move(public_path('storage/dokumen'), $filename);
             
             $data['file_path'] = 'storage/dokumen/' . $filename;
             $data['file_type'] = strtolower($extension);
             $data['file_size'] = $file->getSize();
-        }
-        
-        // Generate thumbnail untuk PDF
-        if ($data['file_type'] == 'pdf') {
-            // Gunakan gambar default untuk PDF
-            $data['thumbnail'] = '/images/pdf-thumbnail.png';
         }
         
         Dokumen::create($data);
