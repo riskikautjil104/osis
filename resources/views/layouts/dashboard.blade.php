@@ -5,226 +5,612 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard OSIS - @yield('title')</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #0F6E56;
-            --primary-dark: #04342C;
-            --secondary: #EF9F27;
+            --primary:        #0F6E56;
+            --primary-light:  #1D9E75;
+            --primary-dark:   #04342C;
+            --secondary:      #EF9F27;
+            --secondary-light:#FAC775;
         }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f7fb;
+            background: #f0f2f5;
+            overflow-x: hidden;
         }
-        
+
+        /* ============================================================
+           SIDEBAR
+        ============================================================ */
         .sidebar {
             width: 260px;
             position: fixed;
-            left: 0;
-            top: 0;
+            left: 0; top: 0;
             height: 100vh;
-            background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary) 100%);
-            color: white;
-            transition: all 0.3s;
+            background: var(--primary-dark);
+            display: flex;
+            flex-direction: column;
             z-index: 1000;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        
-        .sidebar-header {
-            padding: 1.5rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+
+        /* --- Layers: pattern, dots, glow, circles --- */
+        .sb-pattern {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(29,158,117,0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(29,158,117,0.12) 1px, transparent 1px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .sidebar-header h5 {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
+
+        .sb-dots {
+            position: absolute;
+            top: 0; right: 0;
+            width: 130px; height: 180px;
+            background-image: radial-gradient(circle, rgba(250,199,117,0.32) 1.5px, transparent 1.5px);
+            background-size: 18px 18px;
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .sidebar-header small {
-            font-size: 0.7rem;
-            opacity: 0.7;
+
+        .sb-glow {
+            position: absolute;
+            bottom: -80px; left: -60px;
+            width: 260px; height: 260px;
+            background: radial-gradient(circle, rgba(15,110,86,0.28) 0%, transparent 68%);
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .sidebar-nav {
-            padding: 1rem 0;
+
+        .sb-circle-1 {
+            position: absolute;
+            top: -40px; right: -70px;
+            width: 200px; height: 200px;
+            border: 1.5px solid rgba(250,199,117,0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
         }
-        
-        .sidebar-nav .nav-link {
-            color: rgba(255,255,255,0.8);
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s;
+
+        .sb-circle-2 {
+            position: absolute;
+            bottom: 60px; right: -90px;
+            width: 280px; height: 280px;
+            border: 1px solid rgba(29,158,117,0.12);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Header --- */
+        .sb-header {
+            position: relative;
+            z-index: 2;
+            padding: 1.4rem 1.5rem 1.25rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
         }
-        
-        .sidebar-nav .nav-link:hover,
-        .sidebar-nav .nav-link.active {
-            background: rgba(255,255,255,0.1);
+
+        .sb-logo {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: 1.5px solid rgba(255,255,255,0.14);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .sb-logo img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .sb-logo-fallback {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--secondary-light);
+            letter-spacing: -0.5px;
+        }
+
+        .sb-header-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 700;
             color: white;
+            margin-bottom: 2px;
         }
-        
-        .sidebar-nav .nav-link i {
-            width: 20px;
-            font-size: 1rem;
+
+        .sb-header-sub {
+            font-size: 0.62rem;
+            color: rgba(255,255,255,0.38);
         }
-        
+
+        /* --- Section label --- */
+        .sb-section {
+            position: relative;
+            z-index: 2;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.22);
+            padding: 1.1rem 1.5rem 0.35rem;
+        }
+
+        /* --- Nav --- */
+        .sb-nav {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.35rem 0 0.5rem;
+        }
+
+        .sb-nav::-webkit-scrollbar { width: 3px; }
+        .sb-nav::-webkit-scrollbar-track { background: transparent; }
+        .sb-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .sb-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 1.5rem;
+            color: rgba(255,255,255,0.52);
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-left: 2.5px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .sb-link:hover {
+            color: rgba(255,255,255,0.85);
+            background: rgba(255,255,255,0.055);
+            border-left-color: rgba(250,199,117,0.35);
+        }
+
+        .sb-link.active {
+            color: white;
+            background: rgba(29,158,117,0.16);
+            border-left-color: var(--secondary-light);
+            font-weight: 600;
+        }
+
+        .sb-icon {
+            width: 30px; height: 30px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+            color: rgba(255,255,255,0.45);
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .sb-link.active .sb-icon {
+            background: rgba(250,199,117,0.16);
+            color: var(--secondary-light);
+        }
+
+        .sb-link:hover .sb-icon {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.75);
+        }
+
+        .sb-badge {
+            margin-left: auto;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 50px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        /* --- Footer / user --- */
+        .sb-footer {
+            position: relative;
+            z-index: 2;
+            padding: 0.85rem 1.1rem 1rem;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .sb-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 0.8rem;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 7px;
+            cursor: default;
+            transition: background 0.2s;
+        }
+
+        .sb-user:hover { background: rgba(255,255,255,0.08); }
+
+        .sb-avatar {
+            width: 32px; height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary-light));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .sb-user-name {
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sb-user-role {
+            font-size: 0.61rem;
+            color: rgba(255,255,255,0.32);
+        }
+
+        .sb-logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 0.8rem;
+            width: 100%;
+            border: none;
+            background: none;
+            border-radius: 8px;
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.32);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .sb-logout-btn:hover {
+            color: #fca5a5;
+            background: rgba(248,113,113,0.08);
+        }
+
+        /* ============================================================
+           MAIN CONTENT
+        ============================================================ */
         .main-content {
             margin-left: 260px;
-            padding: 1.5rem;
-        }
-        
-        .top-bar {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            transition: margin-left 0.3s ease;
         }
-        
-        .page-title {
-            font-size: 1.25rem;
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 0.85rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left { display: flex; align-items: center; gap: 12px; }
+
+        .topbar-toggle {
+            display: none;
+            background: none;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            width: 36px; height: 36px;
+            align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .topbar-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+        .topbar-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #111;
-            margin: 0;
         }
-        
-        .card-stats {
-            background: white;
-            border-radius: 16px;
-            padding: 1.25rem;
-            transition: all 0.3s;
+
+        .topbar-right { display: flex; align-items: center; gap: 10px; }
+
+        .topbar-date {
+            font-size: 0.72rem;
+            color: #bbb;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .topbar-avatar {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .page-body {
+            flex: 1;
+            padding: 1.75rem;
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 12px;
             border: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            font-size: 0.83rem;
+            padding: 0.85rem 1.25rem;
+            margin-bottom: 1.25rem;
         }
-        
-        .card-stats:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
+        /* Mobile overlay */
+        .sb-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
         }
-        
-        @media (max-width: 768px) {
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+        @media (max-width: 991px) {
             .sidebar {
-                margin-left: -260px;
+                transform: translateX(-100%);
             }
-            .sidebar.show {
-                margin-left: 0;
+
+            .sidebar.open {
+                transform: translateX(0);
             }
+
             .main-content {
                 margin-left: 0;
             }
+
+            .topbar-toggle {
+                display: flex;
+            }
+
+            .sb-overlay.visible {
+                display: block;
+            }
         }
     </style>
-    
+
     @stack('styles')
 </head>
 <body>
 
-<!-- Sidebar -->
+<!-- ===== SIDEBAR ===== -->
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <h5>Dashboard OSIS</h5>
-        <small>SMA 5 Kab. Morotai</small>
+    <div class="sb-pattern"></div>
+    <div class="sb-dots"></div>
+    <div class="sb-glow"></div>
+    <div class="sb-circle-1"></div>
+    <div class="sb-circle-2"></div>
+
+    {{-- Header --}}
+    <div class="sb-header">
+        <div class="sb-logo">
+            <img src="{{ asset('icon/icon.png') }}" alt="Logo OSIS"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <span class="sb-logo-fallback" style="display:none;">O5</span>
+        </div>
+        <div>
+            <div class="sb-header-title">Dashboard OSIS</div>
+            <div class="sb-header-sub">SMA 5 Kab. Morotai</div>
+        </div>
     </div>
-    <div class="sidebar-nav">
-        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.pengurus*') ? 'active' : '' }}" href="{{ route('dashboard.pengurus') }}">
-            <i class="fas fa-users"></i> Pengurus
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.agenda*') ? 'active' : '' }}" href="{{ route('dashboard.agenda') }}">
-            <i class="fas fa-calendar"></i> Agenda
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.berita*') ? 'active' : '' }}" href="{{ route('dashboard.berita') }}">
-            <i class="fas fa-newspaper"></i> Berita
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.galeri*') ? 'active' : '' }}" href="{{ route('dashboard.galeri') }}">
-            <i class="fas fa-image"></i> Galeri
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.pengurus_terdahulu*') ? 'active' : '' }}" href="{{ route('dashboard.pengurus_terdahulu') }}">
-            <i class="fas fa-history"></i> Pengurus Terdahulu
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.visimisi*') ? 'active' : '' }}" href="{{ route('dashboard.visimisi') }}">
-            <i class="fas fa-eye"></i> Visi & Misi
-        </a>
-        <a class="nav-link {{ request()->routeIs('dashboard.proker*') ? 'active' : '' }}" href="{{ route('dashboard.proker') }}">
-    <i class="fas fa-tasks me-2"></i> Program Kerja
-</a>
-        <a class="nav-link {{ request()->routeIs('dashboard.sambutan*') ? 'active' : '' }}" href="{{ route('dashboard.sambutan') }}">
-    <i class="fas fa-microphone-alt me-2"></i> Sambutan Ketua
-</a>
-<a class="nav-link {{ request()->routeIs('dashboard.dokumen*') ? 'active' : '' }}" href="{{ route('dashboard.dokumen') }}">
-    <i class="fas fa-database me-2"></i> One Data
 
-</a>
-<a class="nav-link {{ request()->routeIs('dashboard.pesan*') ? 'active' : '' }}" href="{{ route('dashboard.pesan') }}">
-    <i class="fas fa-envelope me-2"></i> Pesan Masuk
-    @php
-        $unreadCount = \App\Models\Pesan::where('status', 'belum_dibaca')->count();
-    @endphp
-    @if($unreadCount > 0)
-        <span class="badge bg-danger float-end">{{ $unreadCount }}</span>
-    @endif
-</a>
-   
+    {{-- Nav --}}
+    <div class="sb-nav">
 
+        <div class="sb-section">Menu Utama</div>
+
+        <a class="sb-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+           href="{{ route('dashboard') }}">
+            <span class="sb-icon"><i class="fas fa-tachometer-alt"></i></span>
+            Dashboard
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.pengurus*') ? 'active' : '' }}"
+           href="{{ route('dashboard.pengurus') }}">
+            <span class="sb-icon"><i class="fas fa-users"></i></span>
+            Pengurus
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.agenda*') ? 'active' : '' }}"
+           href="{{ route('dashboard.agenda') }}">
+            <span class="sb-icon"><i class="fas fa-calendar-alt"></i></span>
+            Agenda
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.berita*') ? 'active' : '' }}"
+           href="{{ route('dashboard.berita') }}">
+            <span class="sb-icon"><i class="fas fa-newspaper"></i></span>
+            Berita
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.galeri*') ? 'active' : '' }}"
+           href="{{ route('dashboard.galeri') }}">
+            <span class="sb-icon"><i class="fas fa-images"></i></span>
+            Galeri
+        </a>
+
+        <div class="sb-section">Program</div>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.pengurus_terdahulu*') ? 'active' : '' }}"
+           href="{{ route('dashboard.pengurus_terdahulu') }}">
+            <span class="sb-icon"><i class="fas fa-history"></i></span>
+            Pengurus Terdahulu
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.visimisi*') ? 'active' : '' }}"
+           href="{{ route('dashboard.visimisi') }}">
+            <span class="sb-icon"><i class="fas fa-eye"></i></span>
+            Visi &amp; Misi
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.proker*') ? 'active' : '' }}"
+           href="{{ route('dashboard.proker') }}">
+            <span class="sb-icon"><i class="fas fa-tasks"></i></span>
+            Program Kerja
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.sambutan*') ? 'active' : '' }}"
+           href="{{ route('dashboard.sambutan') }}">
+            <span class="sb-icon"><i class="fas fa-microphone-alt"></i></span>
+            Sambutan Ketua
+        </a>
+
+        <div class="sb-section">Data &amp; Komunikasi</div>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.dokumen*') ? 'active' : '' }}"
+           href="{{ route('dashboard.dokumen') }}">
+            <span class="sb-icon"><i class="fas fa-database"></i></span>
+            One Data
+        </a>
+
+        <a class="sb-link {{ request()->routeIs('dashboard.pesan*') ? 'active' : '' }}"
+           href="{{ route('dashboard.pesan') }}">
+            <span class="sb-icon"><i class="fas fa-envelope"></i></span>
+            Pesan Masuk
+            @php $unreadCount = \App\Models\Pesan::where('status', 'belum_dibaca')->count(); @endphp
+            @if($unreadCount > 0)
+                <span class="sb-badge">{{ $unreadCount }}</span>
+            @endif
+        </a>
 
     </div>
-    <!-- Di sidebar, tambahkan setelah menu terakhir -->
-<div class="sidebar-nav mt-auto">
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="nav-link w-100 text-start" style="background: none; border: none; color: rgba(255,255,255,0.8); padding: 0.75rem 1.5rem;">
-            <i class="fas fa-sign-out-alt me-2"></i> Logout
-        </button>
-    </form>
-</div>
+
+    {{-- Footer / User --}}
+    <div class="sb-footer">
+        <div class="sb-user">
+            <div class="sb-avatar">AD</div>
+            <div style="flex:1; min-width:0;">
+                <div class="sb-user-name">Administrator</div>
+                <div class="sb-user-role">Super Admin</div>
+            </div>
+            <i class="fas fa-cog" style="font-size:11px; color:rgba(255,255,255,0.2);"></i>
+        </div>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="sb-logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </form>
+    </div>
 </div>
 
-<!-- Main Content -->
+{{-- Overlay for mobile --}}
+<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
-    <div class="top-bar">
-        <h4 class="page-title">@yield('title')</h4>
-        <button class="btn btn-sm btn-outline-primary d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
+
+    {{-- Top bar --}}
+    <div class="topbar">
+        <div class="topbar-left">
+            <button class="topbar-toggle" id="sidebarToggle" onclick="openSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h4 class="topbar-title">@yield('title')</h4>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-date">
+                <i class="fas fa-calendar-alt"></i>
+                {{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
+            </div>
+            <div class="topbar-avatar">AD</div>
+        </div>
     </div>
-    
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-    
-    @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>
-            @foreach($errors->all() as $error)
-                {{ $error }}<br>
-            @endforeach
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-    
-    @yield('content')
+
+    {{-- Alerts --}}
+    <div style="padding: 0 1.75rem;">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                @foreach($errors->all() as $error)
+                    {{ $error }}<br>
+                @endforeach
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+    </div>
+
+    {{-- Page content --}}
+    <div class="page-body">
+        @yield('content')
+    </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    $('#sidebarToggle').on('click', function() {
-        $('#sidebar').toggleClass('show');
+    function openSidebar() {
+        document.getElementById('sidebar').classList.add('open');
+        document.getElementById('sbOverlay').classList.add('visible');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sbOverlay').classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeSidebar();
     });
 </script>
 
