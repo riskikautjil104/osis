@@ -17,27 +17,30 @@
                 </nav>
                 
                 <!-- Berita Header -->
-                <div class="text-center mb-4">
-                    <span class="badge bg-success mb-3">{{ $berita->kategori }}</span>
-                    <h1 class="fw-bold mb-3">{{ $berita->judul }}</h1>
-                    <div class="text-muted mb-4">
-                        <span><i class="far fa-calendar-alt me-1"></i>{{ $berita->formatted_date }}</span>
-                        <span class="mx-3">•</span>
-                        <span><i class="far fa-eye me-1"></i>{{ $berita->views }} views</span>
-                    </div>
-                </div>
-                
-                <!-- Gambar Cover -->
-                @if($berita->gambar)
-                <div class="mb-4">
-                    <img src="{{ asset($berita->gambar) }}" class="img-fluid rounded-4 shadow-sm w-100" alt="{{ $berita->judul }}">
-                </div>
-                @endif
-                
-                <!-- Konten Berita -->
-                <div class="berita-konten" style="font-size: 1.05rem; line-height: 1.8;">
-                    {!! nl2br(e($berita->konten)) !!}
-                </div>
+               <div class="text-center mb-4">
+    <!-- Perbaikan badge: Hilangkan satu kurung kurawal di luar -->
+    <span class="badge bg-success mb-3">{!! $berita->kategori !!}</span>
+    
+    <h1 class="fw-bold mb-3">{{ $berita->judul }}</h1>
+    <div class="text-muted mb-4">
+        <span><i class="far fa-calendar-alt me-1"></i>{{ $berita->formatted_date }}</span>
+        <span class="mx-3">•</span>
+        <span><i class="far fa-eye me-1"></i>{{ $berita->views }} views</span>
+    </div>
+</div>
+
+<!-- Gambar Cover -->
+@if($berita->gambar)
+<div class="mb-4">
+    <img src="{{ asset($berita->gambar) }}" class="img-fluid rounded-4 shadow-sm w-100" alt="{{ $berita->judul }}">
+</div>
+@endif
+
+<!-- Konten Berita -->
+<div class="berita-konten" style="font-size: 1.05rem; line-height: 1.8;">
+    <!-- Langsung panggil variabelnya tanpa nl2br(e()) karena CKEditor sudah menghasilkan HTML -->
+    {!! $berita->konten !!}
+</div>
                 
                 <!-- Share Button -->
                 <div class="mt-5 pt-3 border-top">
