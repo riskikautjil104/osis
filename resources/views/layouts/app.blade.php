@@ -304,7 +304,7 @@
                 <img src="{{ asset('icon/icon.png') }}" alt="Logo OSIS" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
             </div>
                 <div>
-                    <div class="logo-text">OSIS SMA 5 Morotai</div>
+                    <div class="logo-text">OSIS SMANLI</div>
                     <div class="logo-sub">Kab. Pulau Morotai</div>
                 </div>
             </a>
