@@ -273,7 +273,7 @@
             <span>Struktur Organisasi</span>
         </div>
         <h1 class="page-hero-title">Seluruh Pengurus OSIS</h1>
-        <p class="page-hero-sub">Daftar lengkap pengurus OSIS periode 2024/2025</p>
+        <p class="page-hero-sub">Daftar lengkap pengurus OSIS periode {{ date('Y') }}/{{ date('Y') + 1 }}</p>
     </div>
     <div class="page-hero-wave">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none" style="display:block; height:70px;">

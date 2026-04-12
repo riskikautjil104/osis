@@ -687,7 +687,7 @@
                         </div>
                         <div class="hero-stat">
                             <div class="hero-stat-num">{{ $stats['prestasi'] }}</div>
-                            <div class="hero-stat-label">Prestasi 2024</div>
+                            <div class="hero-stat-label">Prestasi {{ date('Y') }}</div>
                         </div>
                     </div>
                 </div>
@@ -696,7 +696,7 @@
             {{-- RIGHT: Floating UI Cards --}}
             <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
                 <div style="position: relative;">
-                    <div class="hero-tag-float">✦ 2024/2025</div>
+                    <div class="hero-tag-float">✦ {{ date('Y') }}/{{ date('Y') + 1 }}</div>
                     <div class="hero-card-float">
                         <div class="hcf-label">Program Unggulan</div>
                         <div class="hcf-val">Morotai Berprestasi</div>
@@ -758,7 +758,7 @@
                 @endif
                 <div class="sambutan-name">{{ $sambutan->nama_ketua }}</div>
                 <div class="sambutan-role">{{ $sambutan->jabatan }}</div>
-                <div class="sambutan-badge">Periode 2024/2025</div>
+                <div class="sambutan-badge">Periode  {{ date('Y') }}/{{ date('Y') + 1 }}</div>
             </div>
             <div class="sambutan-right">
                 <div class="sambutan-quote-icon">"</div>
@@ -791,7 +791,7 @@
                     <small class="text-muted">{{ $sambutan->jabatan }}</small>
                 </div>
                 <div style="line-height: 1.85; font-size: 0.9rem; color: #444;">
-                    {!! nl2br(e($sambutan->konten)) !!}
+                    {!! $sambutan->konten !!}
                 </div>
             </div>
             <div class="modal-footer border-0">
@@ -843,7 +843,7 @@
                          style="max-width: 280px; width: 100%; filter: drop-shadow(0 20px 30px rgba(15,110,86,0.2));">
                     <div class="mt-3">
                         <span class="badge" style="background: var(--primary);">Official Logo</span>
-                        <span class="badge bg-warning text-dark ms-2">2024/2025</span>
+                        <span class="badge bg-warning text-dark ms-2">{{ date('Y') }}/{{ date('Y') + 1 }}</span>
                     </div>
                 </div>
             </div>

@@ -15,12 +15,12 @@ class Dokumen extends Model
     ];
     
     protected $casts = [
-        'tanggal' => 'date',
+       'tanggal' => 'datetime',
         'is_published' => 'boolean',
         'download_count' => 'integer',
         'view_count' => 'integer',
     ];
-    
+   
     // Auto generate slug
     protected static function boot()
     {

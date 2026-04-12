@@ -11,13 +11,236 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary:        #0F6E56;
-            --primary-light:  #1D9E75;
-            --primary-dark:   #04342C;
-            --secondary:      #EF9F27;
-            --secondary-light:#FAC775;
-        }
+       :root {
+    --primary: #0F6E56;
+    --primary-light: #1D9E75;
+    --primary-dark: #04342C;
+    --secondary: #EF9F27;
+    --secondary-light: #FAC775;
+    --bg-soft: #f8faf9;
+    --border-soft: #e8eeeb;
+    --text-soft: #6b7280;
+}
+
+/* ===== GLOBAL BASE ===== */
+body {
+    background: #f5f7f6;
+    color: #1f2937;
+}
+
+.page-body {
+    animation: fadePage .25s ease;
+}
+
+@keyframes fadePage {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BOOTSTRAP BUTTON OVERRIDE ===== */
+.btn {
+    border-radius: 12px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    transition: all 0.25s ease;
+    box-shadow: none !important;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background: var(--primary-light) !important;
+    border-color: var(--primary-light) !important;
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #fff !important;
+}
+
+.btn-success {
+    background: var(--primary-light);
+    border-color: var(--primary-light);
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-warning {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: var(--primary-dark);
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active {
+    background: var(--secondary-light);
+    border-color: var(--secondary-light);
+    color: var(--primary-dark);
+}
+
+/* ===== FORM OVERRIDE ===== */
+.form-control,
+.form-select {
+    border-radius: 12px;
+    border: 1.5px solid var(--border-soft);
+    font-size: 0.86rem;
+    min-height: 44px;
+    box-shadow: none !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(15,110,86,0.08) !important;
+}
+
+textarea.form-control {
+    min-height: 110px;
+}
+
+/* ===== CARD OVERRIDE ===== */
+.card {
+    border-radius: 18px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    overflow: hidden;
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid var(--border-soft);
+    font-weight: 700;
+}
+
+.shadow-sm {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05) !important;
+}
+
+/* ===== TABLE OVERRIDE ===== */
+.table {
+    --bs-table-bg: transparent;
+}
+
+.table thead th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: #6b7280;
+    border-bottom-width: 1px;
+    border-color: var(--border-soft);
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    border-color: #eef2f0;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+}
+
+/* ===== BADGE ===== */
+.badge {
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.48rem 0.7rem;
+}
+
+/* ===== ALERT ===== */
+.alert {
+    border-radius: 14px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: rgba(29,158,117,0.10);
+    color: var(--primary-dark);
+    border-color: rgba(29,158,117,0.15);
+}
+
+.alert-danger {
+    background: rgba(239,68,68,0.08);
+    color: #991b1b;
+    border-color: rgba(239,68,68,0.14);
+}
+
+/* ===== PAGINATION ===== */
+.pagination {
+    gap: 6px;
+}
+
+.page-link {
+    border: none;
+    border-radius: 12px !important;
+    color: #667085;
+    padding: 0.55rem 0.9rem;
+    box-shadow: none !important;
+}
+
+.page-item.active .page-link {
+    background: var(--primary);
+    color: white;
+}
+
+.page-link:hover {
+    background: rgba(15,110,86,0.08);
+    color: var(--primary);
+}
+
+/* ===== DROPDOWN ===== */
+.dropdown-menu {
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.07);
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 10px;
+    font-size: 0.84rem;
+    padding: 0.65rem 0.8rem;
+}
+
+.dropdown-item:hover {
+    background: rgba(15,110,86,0.08);
+    color: var(--primary);
+}
+
+/* ===== MODAL ===== */
+.modal-content {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-soft);
+}
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -414,12 +637,45 @@
                 display: block;
             }
         }
+        .page-loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+}
+
+.page-loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.page-loader-box {
+    text-align: center;
+}
+
+.page-loader-text {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: #6b7280;
+}
     </style>
 
     @stack('styles')
 </head>
 <body>
-
+<div id="pageLoader" class="page-loader">
+    <div class="page-loader-box">
+        <div class="spinner-border text-success" role="status" style="width: 2.6rem; height: 2.6rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="page-loader-text">Memuat halaman...</div>
+    </div>
+</div>
 <!-- ===== SIDEBAR ===== -->
 <div class="sidebar" id="sidebar">
     <div class="sb-pattern"></div>
@@ -612,6 +868,41 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeSidebar();
     });
+        window.addEventListener('load', function () {
+        const loader = document.getElementById('pageLoader');
+        if (loader) {
+            setTimeout(() => loader.classList.add('hide'), 200);
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        const link = e.target.closest('a[href]');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        const target = link.getAttribute('target');
+
+        if (
+            href &&
+            href !== '#' &&
+            !href.startsWith('javascript:') &&
+            !href.startsWith('#') &&
+            target !== '_blank'
+        ) {
+            const loader = document.getElementById('pageLoader');
+            if (loader) loader.classList.remove('hide');
+        }
+    });
+
+    if (window.jQuery) {
+        $(document).ajaxStart(function () {
+            $('#pageLoader').removeClass('hide');
+        });
+
+        $(document).ajaxStop(function () {
+            $('#pageLoader').addClass('hide');
+        });
+    }
 </script>
 
 @stack('scripts')
